@@ -1,23 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import BlogPreviews from './screens/BlogPreviews';
+import FullBlog from './screens/FullBlog';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <>
-      <StatusBar style="auto" />
-      <View style={styles.container}>
-        <Text>Crack a doodle doo</Text>
-      </View>
-    </>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={BlogPreviews} />
+        <Stack.Screen name="Full Blog" component={FullBlog} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

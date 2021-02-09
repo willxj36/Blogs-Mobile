@@ -15,7 +15,7 @@ interface FullBlogProps {
 
 const FullBlog: React.FC<FullBlogProps> = ({ route }) => {
 
-    // const navigation = useNavigation();      leaving here as may be useful later
+    const navigation = useNavigation();
     const { blogId } = route.params;
 
     const [blog, setBlog] = useState<Blog>();
@@ -26,6 +26,7 @@ const FullBlog: React.FC<FullBlogProps> = ({ route }) => {
         (async () => {
             let blog = await apiService(url);
             setBlog(blog);
+            navigation.setOptions({ title: `${blog?.title}` });
         })();
     }, [blogId])
 
@@ -33,7 +34,7 @@ const FullBlog: React.FC<FullBlogProps> = ({ route }) => {
 
     return (
         <>
-            <StatusBar style="auto" />
+            <StatusBar style="light" />
             <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
                 <Image style={{ width: 350, height: 250, marginTop: 20 }} source={{ uri: 'https://tranquil-dusk-62236.herokuapp.com/space-stock.jpg' }} />
                 <Text style={styles.titleText}>{blog?.title}</Text>

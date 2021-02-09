@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { StyleSheet, ScrollView, Text, Button, Alert } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useNavigation } from '@react-navigation/native';
 
@@ -26,7 +26,7 @@ const BlogPreviews = () => {
 
     return (
         <>
-            <StatusBar style="auto" />
+            <StatusBar style="light" />
             <ScrollView style={styles.container}>
                 {blogs.map(blog => (
                     <BlogPreviewCard key={blog.id} blog={blog} />

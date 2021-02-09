@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
         width: 375,
         borderColor: '#080080',
         borderWidth: 3,
-        borderRadius: 10
+        borderRadius: 10,
+        backgroundColor: '#eee'
     },
     title: {
         fontSize: 30

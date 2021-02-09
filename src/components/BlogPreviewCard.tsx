@@ -32,7 +32,10 @@ const BlogPreviewCard: React.FC<IPreviewCardProps> = ({ blog }) => {
 
 const styles = StyleSheet.create({
     card: {
-        width: 375
+        width: 375,
+        borderColor: '#080080',
+        borderWidth: 3,
+        borderRadius: 10
     },
     title: {
         fontSize: 30

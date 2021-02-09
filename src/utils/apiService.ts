@@ -1,3 +1,19 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export const SetAccessToken = async (token: string, user: {userid: number, role: string}) => {
+    await AsyncStorage.setItem('token', token);
+    await AsyncStorage.setItem('user', JSON.stringify(user));
+};
+
+export const GetToken = async () => {
+    return await AsyncStorage.getItem('token');
+};
+
+export const GetUser = async () => {
+    let user = await AsyncStorage.getItem('user');
+    return user? JSON.parse(user) : null;
+};
+
 export const apiService = async <T = any>(uri: string, method: string = 'GET', body?: {}) => {
 
     let headers = new Headers();

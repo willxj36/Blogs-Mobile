@@ -1,8 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Button, Input } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { apiService } from '../utils/apiService';
 
 const Register = () => {
@@ -25,7 +27,14 @@ const Register = () => {
                     email,
                     password
                 });
-                //successful register logic here
+                if(res) {
+                    await AsyncStorage.setItem('User', JSON.stringify(res));
+                    alert('User registered successfully!');
+                    setWorking(false);
+                    //navigation logic here
+                } else {
+                    throw Error;
+                }
             } catch (e) {
                 console.log(e);
                 alert('Something went wrong, please try again');

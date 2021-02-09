@@ -1,9 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { apiService } from '../utils/apiService';
+import { apiService, SetAccessToken } from '../utils/apiService';
 
 const Login = () => {
 
@@ -17,13 +17,17 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             setWorking(true);
-            let res = await apiService(url, 'POST', {
+            let result = await apiService(url, 'POST', {
                 email,
                 password
             });
-            if(res) {
-                //successful login logic here
-                alert('Login successful!')
+            if(result) {
+                let userid = result.userid;
+                let role = result.role;
+                await SetAccessToken(result.token, {userid, role});
+                alert('Login successful!');
+                setWorking(false);
+                navigation.navigate('Home');
             } else {
                 alert("Info entered doesn't match our records, please try again!");
                 setWorking(false);

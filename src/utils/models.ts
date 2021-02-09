@@ -7,3 +7,8 @@ export interface Blog {
     tag?: string,
     _created?: Date
 }
+
+export interface UserFront {
+    userid: number,
+    role: string
+}

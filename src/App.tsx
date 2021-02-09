@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Button } from 'react-native-elements';
 import { GetUser } from './utils/apiService';
+import { UserFront } from './utils/models';
 
 import BlogPreviews from './screens/BlogPreviews';
 import FullBlog from './screens/FullBlog';
@@ -16,14 +17,14 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
-  const [user, setUser] = useState<boolean>(false);
+  const [user, setUser] = useState<UserFront>();
 
   useEffect(() => {
     (async () => {
       let user = await GetUser();
-      user ? setUser(true) : setUser(false);
+      setUser(user);
     })();
-  })
+  }, []);
 
   return (
     <NavigationContainer>

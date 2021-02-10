@@ -11,7 +11,7 @@ export const GetToken = async () => {
 
 export const GetUser = async () => {
     let user = await AsyncStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+    return user != null ? JSON.parse(user) : null;
 };
 
 export const apiService = async <T = any>(uri: string, method: string = 'GET', body?: {}) => {

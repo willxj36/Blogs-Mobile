@@ -5,7 +5,7 @@ import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { apiService } from '../utils/apiService';
+import { apiService, SetAccessToken } from '../utils/apiService';
 
 const Register = () => {
 
@@ -22,16 +22,18 @@ const Register = () => {
         setWorking(true);
         if(password === confirmPass) {
             try {
-                let res = await apiService(url, 'POST', {
+                let result = await apiService(url, 'POST', {
                     name,
                     email,
                     password
                 });
-                if(res) {
-                    await AsyncStorage.setItem('User', JSON.stringify(res));
+                if(result) {
+                    let userid = result.userid;
+                    let role = result.role;
+                    await SetAccessToken(result.token, {userid, role});
                     alert('User registered successfully!');
                     setWorking(false);
-                    //navigation logic here
+                    navigation.navigate('Author Page');
                 } else {
                     throw Error;
                 }

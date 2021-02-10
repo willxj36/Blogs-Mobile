@@ -21,8 +21,6 @@ const BlogPreviews = () => {
             setBlogs(blogs);
         })();
     }, []);
-    
-    const navigation = useNavigation();
 
     return (
         <>

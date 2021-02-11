@@ -1,7 +1,7 @@
 import * as React from 'react';
 import dayjs from 'dayjs';
 import { Card, Text, Button } from 'react-native-elements';
-import { Alert, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { Blog } from '../utils/models';
 import { useNavigation } from '@react-navigation/native';

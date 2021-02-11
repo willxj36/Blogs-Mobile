@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { apiService, SetAccessToken } from '../utils/apiService';
+import { LoggedIn } from '../components/LoggedInProvider';
 
 const Register = () => {
+
+    const [user, setUser] = useContext(LoggedIn);
 
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -22,15 +24,14 @@ const Register = () => {
         setWorking(true);
         if(password === confirmPass) {
             try {
-                let result = await apiService(url, 'POST', {
+                let result: {token: string, role: string, userid: number} = await apiService(url, 'POST', {
                     name,
                     email,
                     password
                 });
                 if(result) {
-                    let userid = result.userid;
-                    let role = result.role;
-                    await SetAccessToken(result.token, {userid, role});
+                    setUser({userid: result.userid, role: result.role});
+                    await SetAccessToken(result.token, {userid: result.userid, role: result.role});
                     alert('User registered successfully!');
                     setWorking(false);
                     navigation.navigate('Author Page');

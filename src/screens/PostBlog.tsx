@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 import { apiService } from '../utils/apiService';
-import { LoggedIn, IContext } from './LoggedInProvider';
+import { LoggedIn, IContext } from '../components/LoggedInProvider';
 
 const PostBlog = () => {
 
@@ -36,19 +36,27 @@ const PostBlog = () => {
         }
     }
 
-    return(
-        <ScrollView>
+    if(user.role === 'guest') {
+        return(
             <View>
-                <Text>Title</Text>
-                <Input value={title} onChangeText={(value) => setTitle(value)} />
-                <Text>Content</Text>
-                <Input multiline value={content} onChangeText={(value) => setContent(value)} />
+                <Text>Welcome to your Author Page! An admin will need to approve your account before you can post new blogs, but please explore our site in the meantime!</Text>
             </View>
-            <View>
-                <Button title="Post your blog!" onPress={handlePost} />
-            </View>
-        </ScrollView>
-    )
+        )
+    } else {
+        return(
+            <ScrollView>
+                <View>
+                    <Text>Title</Text>
+                    <Input value={title} onChangeText={(value) => setTitle(value)} />
+                    <Text>Content</Text>
+                    <Input multiline value={content} onChangeText={(value) => setContent(value)} />
+                </View>
+                <View>
+                    <Button title="Post your blog!" onPress={handlePost} />
+                </View>
+            </ScrollView>
+        )
+    }
 
 }
 

@@ -10,8 +10,9 @@ import BlogPreviews from '../screens/BlogPreviews';
 import FullBlog from '../screens/FullBlog';
 import Login from '../screens/Login';
 import Register from '../screens/Register';
-import AuthorPage from '../screens/AuthorPage';
+import AuthorPage from '../components/AuthorPage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import EditBlog from '../screens/EditBlog';
 
 const Stack = createStackNavigator();
 
@@ -69,17 +70,20 @@ const RootNav = () => {
                 <Stack.Screen name="Full Blog" component={FullBlog} />
 
                 {user?.userid ? (
-                    <Stack.Screen name="Author Page"
-                        component={AuthorPage}
-                        options={({ navigation }) => ({
-                            headerRight: () => (
-                                <Button title="Log Out"
-                                    titleStyle={{ color: '#080080' }}
-                                    buttonStyle={{ backgroundColor: '#eee', marginRight: 15 }}
-                                    onPress={() => { logout(navigation) }} />
-                            )
-                        })}
-                    />
+                    <>
+                        <Stack.Screen name="Author Page"
+                            component={AuthorPage}
+                            options={({ navigation }) => ({
+                                headerRight: () => (
+                                    <Button title="Log Out"
+                                        titleStyle={{ color: '#080080' }}
+                                        buttonStyle={{ backgroundColor: '#eee', marginRight: 15 }}
+                                        onPress={() => { logout(navigation) }} />
+                                )
+                            })}
+                        />
+                        <Stack.Screen name="Edit Blog" component={EditBlog} />
+                    </>
                 ) : (
                         <>
                             <Stack.Screen name="Login"

@@ -21,15 +21,12 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             setWorking(true);
-            let result: {token: string, role: string, userid: number} 
-            = await apiService(url, 'POST', {
+            let result: {token: string, role: string, userid: number} = await apiService(url, 'POST', {
                 email,
                 password
             });
             if(result) {
-                console.log(result.userid);
                 setUser({userid: result.userid, role: result.role});
-                console.log(user);
                 await SetAccessToken(result.token, {userid: result.userid, role: result.role});
                 alert('Login successful!');
                 setWorking(false);

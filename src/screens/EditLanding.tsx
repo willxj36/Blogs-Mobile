@@ -3,11 +3,13 @@ import { useState, useEffect, useContext } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 import { apiService } from '../utils/apiService';
-import { LoggedIn, IContext } from './LoggedInProvider';
+import { LoggedIn, IContext } from '../components/LoggedInProvider';
 
 import {Blog} from '../utils/models';
 
-const EditBlogs = () => {
+import EditBlogCard from '../components/EditBlogCard';
+
+const EditLanding = () => {
 
     const [user, setUser] = useContext<IContext>(LoggedIn);
 
@@ -23,19 +25,13 @@ const EditBlogs = () => {
     }, [user]);
 
     return(
-        <ScrollView>
-            <View>
-                <Text>Title</Text>
-                <Input value={title} onChangeText={(value) => setTitle(value)} />
-                <Text>Content</Text>
-                <Input multiline value={content} onChangeText={(value) => setContent(value)} />
-            </View>
-            <View>
-                <Button title="Submit Edits" onPress={handleEdit} />
-            </View>
+        <ScrollView style={{ backgroundColor: 'black', flex: 1 }}>
+            {blogs?.map(blog => (
+                <EditBlogCard key={blog.id} blog={blog} />
+            ))}
         </ScrollView>
     )
 
 }
 
-export default EditBlogs;
+export default EditLanding;

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Button } from 'react-native-elements';
-import { GetUser, apiService } from './utils/apiService';
-import { UserFront } from './utils/models';
+import { apiService, GetUser } from './utils/apiService';
+import { LoggedIn, LoggedInProvider } from './components/LoggedInProvider';
 
 import BlogPreviews from './screens/BlogPreviews';
 import FullBlog from './screens/FullBlog';
@@ -17,20 +17,21 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
-  const [user, setUser] = useState<UserFront>();
+  const [user, setUser] = useContext(LoggedIn);
 
   useEffect(() => {
     (async () => {
       let user = await GetUser();
       setUser(user);
     })();
-  }, [AsyncStorage]);
+  }, [])
 
   const logout = async (navigation: any) => {
     try {
       let url = `https://tranquil-dusk-62236.herokuapp.com/auth/logout/${user?.userid}`;
       let res = await apiService(url);
       if(res.status === 200) {
+        setUser({userid: undefined, role: ''});
         await AsyncStorage.removeItem('user');
         await AsyncStorage.removeItem('token');
         alert('Logged out successfully!');
@@ -45,45 +46,61 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home"
-        screenOptions= {({ navigation }) => ({
-          headerStyle: {
-            backgroundColor: '#080080'
-          },
-          headerTintColor: '#bbb',
-          headerRight: () => (user ? (
-            <Button title="Author Page"
-              titleStyle={{ color: '#080080' }}
-              buttonStyle={{ backgroundColor: '#eee', marginRight: 15 }}
-              onPress={() => navigation.navigate('Author Page')} />
-            ) : (
-            <Button title="Login"
-              titleStyle={{ color: '#080080' }}
-              buttonStyle={{ backgroundColor: '#eee', marginRight: 15 }}
-              onPress={() => navigation.navigate('Login')} />
+    <LoggedInProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home"
+          screenOptions= {({ navigation }) => ({
+            headerStyle: {
+              backgroundColor: '#080080'
+            },
+            headerTintColor: '#bbb',
+            headerRight: () => (user.userid ? (
+              <Button title="Author Page"
+                titleStyle={{ color: '#080080' }}
+                buttonStyle={{ backgroundColor: '#eee', marginRight: 15 }}
+                onPress={() => console.log(user)}  //navigation.navigate('Author Page') 
+              />
+              ) : (
+              <Button title='Login'
+                titleStyle={{ color: '#080080' }}
+                buttonStyle={{ backgroundColor: '#eee', marginRight: 15 }}
+                onPress={() => navigation.navigate('Login')} 
+              />
+              )
             )
-          )
-        })}>
-        <Stack.Screen name="Home" 
-          component={BlogPreviews}
-          options={{ title: "Bloggy Blogger Blogs" }} />
-        <Stack.Screen name="Full Blog" component={FullBlog} />
-        <Stack.Screen name="Login" 
-          component={Login}
-          options={{ headerRight: () => null}} />
-        <Stack.Screen name="Register" 
-          component={Register}
-          options={{ headerRight: () => null }} />
-        <Stack.Screen name="Author Page"
-          component={AuthorPage}
-          options={({ navigation }) => ({ headerRight: () => (
-            <Button title="Log Out"
-              titleStyle={{ color: '#080080' }}
-              buttonStyle={{ backgroundColor: '#eee', marginRight: 15 }}
-              onPress={() => {logout(navigation)}} />
-          )})} />
-      </Stack.Navigator>
-    </NavigationContainer>
+          })}
+        >
+          <Stack.Screen name="Home" 
+            component={BlogPreviews}
+            options={{ title: "Bloggy Blogger Blogs" }} 
+          />
+          <Stack.Screen name="Full Blog" component={FullBlog} />
+
+          {user.userid ? (
+            <Stack.Screen name="Author Page"
+              component={AuthorPage}
+              options={({ navigation }) => ({ headerRight: () => (
+                <Button title="Log Out"
+                  titleStyle={{ color: '#080080' }}
+                  buttonStyle={{ backgroundColor: '#eee', marginRight: 15 }}
+                  onPress={() => {logout(navigation)}} />
+              )})} 
+            />
+          ) : (
+            <>
+              <Stack.Screen name="Login" 
+                component={Login}
+                options={{ headerRight: () => null}} 
+              />
+              <Stack.Screen name="Register" 
+                component={Register}
+                options={{ headerRight: () => null }} 
+              />
+            </>
+          )}
+
+        </Stack.Navigator>
+      </NavigationContainer>
+    </LoggedInProvider>
   );
 }

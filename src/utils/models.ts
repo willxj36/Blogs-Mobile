@@ -9,6 +9,6 @@ export interface Blog {
 }
 
 export interface UserFront {
-    userid: number,
-    role: string
+    userid?: number,
+    role?: string
 }

@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { apiService, SetAccessToken } from '../utils/apiService';
+
+import { LoggedIn } from '../components/LoggedInProvider';
 
 const Login = () => {
 
@@ -11,20 +13,23 @@ const Login = () => {
     const [password, setPassword] = useState<string>('');
     const [working, setWorking] = useState<boolean>(false);
 
+    const [user , setUser] = useContext(LoggedIn);
+    
     const url = 'https://tranquil-dusk-62236.herokuapp.com/auth/login'
     const navigation = useNavigation();
 
     const handleLogin = async () => {
         try {
             setWorking(true);
-            let result = await apiService(url, 'POST', {
+            let result: {token: string, role: string, userid: number} | false = await apiService(url, 'POST', {
                 email,
                 password
             });
             if(result) {
-                let userid = result.userid;
-                let role = result.role;
-                await SetAccessToken(result.token, {userid, role});
+                setUser((result) => ({userid: result.userid, role: result.role}));
+                console.log(result.role);
+                console.log(user);
+                await SetAccessToken(result.token, {userid: result.userid, role: result.role});
                 alert('Login successful!');
                 setWorking(false);
                 navigation.navigate('Home');

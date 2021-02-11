@@ -5,7 +5,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { apiService, SetAccessToken } from '../utils/apiService';
 
-import { LoggedIn } from '../components/LoggedInProvider';
+import { LoggedIn, IContext } from '../components/LoggedInProvider';
 
 const Login = () => {
 
@@ -13,7 +13,7 @@ const Login = () => {
     const [password, setPassword] = useState<string>('');
     const [working, setWorking] = useState<boolean>(false);
 
-    const [user , setUser] = useContext(LoggedIn);
+    const [user , setUser] = useContext<IContext>(LoggedIn);
     
     const url = 'https://tranquil-dusk-62236.herokuapp.com/auth/login'
     const navigation = useNavigation();
@@ -21,13 +21,14 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             setWorking(true);
-            let result: {token: string, role: string, userid: number} | false = await apiService(url, 'POST', {
+            let result: {token: string, role: string, userid: number} 
+            = await apiService(url, 'POST', {
                 email,
                 password
             });
             if(result) {
-                setUser((result) => ({userid: result.userid, role: result.role}));
-                console.log(result.role);
+                console.log(result.userid);
+                setUser({userid: result.userid, role: result.role});
                 console.log(user);
                 await SetAccessToken(result.token, {userid: result.userid, role: result.role});
                 alert('Login successful!');
@@ -68,7 +69,8 @@ const Login = () => {
                     titleStyle={styles.buttonTitle} 
                     buttonStyle={styles.button} 
                     title='Log In' />
-                <Button 
+                <Button
+                    disabled={working}
                     onPress={() => navigation.navigate('Register')}
                     titleStyle={styles.buttonTitle} 
                     buttonStyle={styles.button} 

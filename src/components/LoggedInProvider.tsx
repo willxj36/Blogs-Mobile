@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from 'react';
 import { GetUser } from '../utils/apiService';
 import { UserFront } from '../utils/models';
 
-type IContext = [UserFront, React.Dispatch<React.SetStateAction<UserFront>>];
+export type IContext = [UserFront, React.Dispatch<React.SetStateAction<UserFront>>];
 
 
 export const LoggedIn = createContext<IContext>([{}, () => {}]);
@@ -14,6 +14,13 @@ export const LoggedInProvider: React.FC = (props) => {
         role: '',
         userid: undefined
     });
+
+    useEffect(() => {
+        (async () => {
+            let user = await GetUser();
+            setUser(user);
+        })();
+    }, []);
 
     return(
         <LoggedIn.Provider value={[user, setUser]}>

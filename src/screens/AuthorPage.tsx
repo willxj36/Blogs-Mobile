@@ -1,12 +1,20 @@
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import PostBlog from '../components/PostBlog';
+import EditBlog from '../components/EditBlog';
 
 const AuthorPage = () => {
 
-    return(
-        <View>
-            <Text>Author Page</Text>
-        </View>
+    const Tab = createBottomTabNavigator();
+
+    return (
+
+        <Tab.Navigator initialRouteName="Post">
+            <Tab.Screen name="Post" component={PostBlog} />
+            <Tab.Screen name="Edit" component={EditBlog} />
+        </Tab.Navigator>
+
     )
 
 }

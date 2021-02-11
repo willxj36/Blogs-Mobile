@@ -32,7 +32,7 @@ export const apiService = async <T = any>(uri: string, method: string = 'GET', b
         if(res.ok) {
             return <T>(await res.json());
         } else {
-            return false;
+            throw new Error('Something went wrong')
         }
     } catch (e) {
         console.log(e);

@@ -5,11 +5,11 @@ import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 
 import { apiService, SetAccessToken } from '../utils/apiService';
-import { LoggedIn } from '../components/LoggedInProvider';
+import { IContextAuth, LoggedIn } from '../components/ContextProvider';
 
 const Register = () => {
 
-    const [user, setUser] = useContext(LoggedIn);
+    const [user, setUser] = useContext<IContextAuth>(LoggedIn);
 
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');

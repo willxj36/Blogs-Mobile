@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 import { apiService } from '../utils/apiService';
-import { LoggedIn, IContext } from '../components/LoggedInProvider';
+import { LoggedIn, IContextAuth } from '../components/ContextProvider';
 
 import {Blog} from '../utils/models';
 
@@ -11,7 +11,7 @@ import EditBlogCard from '../components/EditBlogCard';
 
 const EditLanding = () => {
 
-    const [user, setUser] = useContext<IContext>(LoggedIn);
+    const [user, setUser] = useContext<IContextAuth>(LoggedIn);
 
     const [blogs, setBlogs] = useState<Blog[]>([]);
 

@@ -31,9 +31,17 @@ export const apiService = async <T = any>(uri: string, method: string = 'GET', b
         let res = await fetch(uri, options);
         if(res.ok) {
             return <T>(await res.json());
+        } else if(res.status === 401) {
+            throw new Error('Permission problem');
+        } else if(res.status === 404) {
+            throw new Error("Page doesn't exist, better check the url or params");
+        } else if(res.status === 500) {
+            throw new Error("Server's pitching a fit")
         } else {
-            throw new Error('Something went wrong')
+            throw new Error("Honestly, I don't know what happened")
         }
+
+        
     } catch (e) {
         console.log(e);
         throw e;

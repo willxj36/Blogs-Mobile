@@ -5,7 +5,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { apiService, SetAccessToken } from '../utils/apiService';
 
-import { LoggedIn, IContext } from '../components/LoggedInProvider';
+import { LoggedIn, IContextAuth } from '../components/ContextProvider';
 
 const Login = () => {
 
@@ -13,7 +13,7 @@ const Login = () => {
     const [password, setPassword] = useState<string>('');
     const [working, setWorking] = useState<boolean>(false);
 
-    const [user , setUser] = useContext<IContext>(LoggedIn);
+    const [user , setUser] = useContext<IContextAuth>(LoggedIn);
     
     const url = 'https://tranquil-dusk-62236.herokuapp.com/auth/login'
     const navigation = useNavigation();

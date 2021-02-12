@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { LoggedInProvider } from './components/LoggedInProvider';
+import { ContextProvider } from './components/ContextProvider';
 import RootNav from './screens/RootNav'
 
 export default function App() {
 
   return (
-    <LoggedInProvider>
+    <ContextProvider>
       <RootNav />
-    </LoggedInProvider>
+    </ContextProvider>
   );
  
 }

@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Button } from 'react-native-elements';
 import { apiService } from '../utils/apiService';
-import { LoggedIn, IContext } from '../components/LoggedInProvider';
+import { LoggedIn, IContextAuth } from '../components/ContextProvider';
 
 import BlogPreviews from '../screens/BlogPreviews';
 import FullBlog from '../screens/FullBlog';
@@ -18,7 +18,7 @@ const Stack = createStackNavigator();
 
 const RootNav = () => {
 
-    const [user, setUser] = useContext<IContext>(LoggedIn);
+    const [user, setUser] = useContext<IContextAuth>(LoggedIn);
 
     const logout = async (navigation: any) => {
         try {

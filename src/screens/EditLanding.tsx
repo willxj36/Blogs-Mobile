@@ -19,8 +19,12 @@ const EditLanding = () => {
         (async () => {
             let url = 'https://tranquil-dusk-62236.herokuapp.com/api/blogs';
             let allBlogs: Blog[] = await apiService(url);
-            let blogs: Blog[] = allBlogs.filter(blog => blog.authorid === user.userid)
-            setBlogs(blogs);
+            if(user.role === 'author') {
+                let blogs: Blog[] = allBlogs.filter(blog => blog.authorid === user.userid)
+                setBlogs(blogs);
+            } else {
+                setBlogs(allBlogs);
+            }
         })();
     }, [user]);
 

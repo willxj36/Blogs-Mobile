@@ -56,7 +56,7 @@ const EditBlog: React.FC<EditBlogProps> = ({ route }) => {
 
     useEffect(() => { //this useEffect sets state to the respective info to be edited
         if(blog) {
-            if(blog.authorid !== user.userid) {
+            if(user.role === 'author' && blog.authorid !== user.userid) {
                 alert("You shouldn't be here! You can only edit your own blogs!");
                 navigation.navigate('Author Page');
             }
